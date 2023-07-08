@@ -1,0 +1,39 @@
+version: "3"
+
+networks:
+  killercat:
+    driver: bridge
+
+services:
+  db:
+    image: mariadb:10.11.4
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+
+      MARIADB_DATABASE: dameunapata
+      # MARIADB_USER: killercat
+      # MARIADB_PASSWORD: killallthecats
+
+    expose:
+      - "3306"
+
+    ports:
+      - "3306:3306"
+
+    networks:
+      - killercat
+  
+  backend:
+    depends_on:
+      - db 
+
+    build: .
+      # context: .
+      # dockerfile: Dockerfile
+    ports:
+      - "1337:1337"
+    # volumes:
+    #   - .:/user/src/app
+
+    networks:
+      - killercat
