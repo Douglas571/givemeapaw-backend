@@ -29,6 +29,13 @@
       "relation": "manyToOne",
       "target": "api::campaign.campaign",
       "inversedBy": "donations"
+    },
+    "verified": {
+      "type": "boolean"
+    },
+    "reference": {
+      "type": "biginteger",
+      "required": true
     }
   }
 }

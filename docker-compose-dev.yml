@@ -1,12 +1,10 @@
 version: "3"
 
-networks:
-  killercat:
-    driver: bridge
-
 volumes:
   data:
 
+# The services have a default network, so 
+# is unnecessary to define a networkd 
 services:
   db:
     image: mariadb:10.11.4
@@ -23,9 +21,6 @@ services:
     ports:
       - "3306:3306"
 
-    networks:
-      - killercat
-
     volumes:
       - data:/var/lib/mysql
   
@@ -33,14 +28,16 @@ services:
     depends_on:
       - db 
 
-    build: .
-      # context: .
-      # dockerfile: Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - "1337:1337"
 
-    # volumes:
-    #   - .:/user/src/app
-
-    networks:
-      - killercat
+    volumes:
+      - ./config:/home/app/config
+      - ./src:/home/app/src
+      - ./package.json:/home/app/package.json
+      - ./yarn.lock:/home/app/yarn.lock
+      - ./.env:/home/app/.env
+      - ./public/uploads:/home/app/public/uploads
